@@ -4,7 +4,7 @@ import application
 
 
 def test_init_scoped_session_called_once():
-    """1. test that init_scoped_session is only called once in app setup and usage."""
+    """1. Test that init_scoped_session is only called once in app setup."""
 
     class Recorder(object):
         called = 0
@@ -35,16 +35,16 @@ def test_init_scoped_session_called_once():
 
 
 def test_session_access(app):
-    # this function lives in a module outside of the init file where db was created
-    # and it uses the scoped_session session object provided by the db
+    """1. Test that session is accessible by all parts of the app."""
+    # the function 'create_user' lives in a module outside of the init file
+    # where db was created nd it uses the scoped_session session object
+    # provided by the db
     application.api.create_user(username="kelly", password="kelly")
-    assert (
-        application.database.User.query.filter_by(username="kelly").first() is not None
-    )
+    assert application.database.User.query.filter_by(username="kelly").first() is not None
 
 
 def test_init_scoped_session_remove_called_after_request2():
-    """#2. test that scoped_session.remove() is called when the web request ends."""
+    """#2. Test that scoped_session.remove() is called when the web request ends."""
 
     class Recorder(object):
         count = 0
